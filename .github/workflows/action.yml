@@ -60,7 +60,7 @@ jobs:
 
       - name: Update function-code
         run: |
-            aws lambda update function-code \
+            aws lambda update-function-code \
             --function-name my-function \
             --s3-bucket github-actions-29nov \
             --s3-key $${{ github.sha }} \
