@@ -1,0 +1,31 @@
+name: Deploy my Lamda Function
+
+on:
+  push:
+    branches: 
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+      - name: Set up python
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.8
+      - name: Install libraries
+        run: |
+            cd function
+            python -m pip install --upgrade pip
+            if [ -f requirements.txt ]; then pip install requirements.txt -t ,; fi
+      - name: Create Zip bundle
+        run: | 
+          cd function
+          zip -r ../${{ github.sha }}.zip .
+      - name: Archive Artifact 
+        uses: actions/upload-artifact@v3
+        with: 
+          name: zipped-bundle
+          path: ${{ github.sha }}.zip
